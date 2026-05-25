@@ -1,187 +1,40 @@
 ---
-name: setup-pre-commit-multi
-description: Multi-language pre-commit hook setup for Python (pre-commit + ruff + pyright + conventional-commits) AND JS/TS (Husky + lint-staged + ESLint + Prettier). Auto-detects project type from pyproject.toml/package.json and configures both when present. Use for polyglot repos or when you need Python tooling — for JS-only projects prefer `setup-pre-commit` (mattpocock Husky-only).
+name: hook-setup
+description: "Set up or repair Python and JS/TS pre-commit hooks with repo-native tooling."
+argument-hint: "[repo path] [python|js|both]"
 ---
 
-# Setup Pre-Commit Hooks
+# Setup Pre-Commit Multi
 
-Detect project type and set up appropriate pre-commit hooks.
+Set up or repair pre-commit checks without swapping the repo's package manager or overwriting existing config.
 
-## Step 1: Detect Project Type
+## Workflow
 
-- `pyproject.toml` → **Python**
-- `package.json` → **JS/TS**
-- Both → ask the user which to set up (or both)
+1. Inspect first:
+   - `git status -sb`
+   - `pyproject.toml`, `uv.lock`
+   - `package.json`, lockfiles
+   - existing `.pre-commit-config.yaml`, `.husky/`, `lint-staged`, `eslint.config.*`, `.prettier*`
+2. Read `references/policy.md` before choosing tools, hook stages, or verification commands.
+3. Choose scope:
+   - Python only: read `references/python.md`
+   - JS/TS only: read `references/js-ts.md`
+   - both: read both, then keep the two systems independent unless the repo already integrates them
+4. Preserve existing config. Patch narrowly; do not replace working hook files or package scripts without a clear reason.
+5. Check current docs/releases before adding pinned hook versions or new packages.
+6. Install with the repo's package manager/runtime.
+7. Verify with the exact hook commands and fix resulting issues.
 
----
+## Rules
 
-## Python Project
+- Python uses `uv` by default here. Do not introduce pip/pipx/poetry unless the repo already uses them or the user approves.
+- JS/TS uses the detected package manager consistently: pnpm, bun, yarn, then npm fallback.
+- Do not auto-commit after setup.
+- Do not add new lint/type tools when equivalent repo tooling already exists; wire existing commands into hooks.
+- If both Python and JS/TS are present, ask before setting up both unless the user already requested both.
 
-### 1. Install pre-commit
+## Verify
 
-```bash
-uv add --dev pre-commit
-```
-
-### 2. Create `.pre-commit-config.yaml`
-
-```yaml
-repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.6
-    hooks:
-      - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
-      - id: ruff-format
-
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
-    hooks:
-      - id: check-ast
-      - id: check-json
-      - id: check-yaml
-      - id: check-toml
-      - id: check-added-large-files
-      - id: check-merge-conflict
-      - id: check-case-conflict
-      - id: check-symlinks
-      - id: check-executables-have-shebangs
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-
-  - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.394
-    hooks:
-      - id: pyright
-        additional_dependencies:
-          - pytest
-
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.0.0
-    hooks:
-      - id: conventional-pre-commit
-        stages: [commit-msg]
-```
-
-**Adapt**:
-- If `pyproject.toml` lists dependencies needed by pyright (pydantic, sqlalchemy, etc.), add them to `additional_dependencies`
-- Check for latest hook versions before using the pinned ones above
-
-### 3. Install hooks
-
-```bash
-uv run pre-commit install --install-hooks
-uv run pre-commit install --hook-type commit-msg
-```
-
-### 4. Verify
-
-Run `uv run pre-commit run --all-files` and fix any issues.
-
----
-
-## JS/TS Project
-
-### 1. Detect package manager
-
-Check for `pnpm-lock.yaml` (pnpm), `yarn.lock` (yarn), `bun.lockb` (bun), `package-lock.json` (npm). Default to npm.
-
-### 2. Install dependencies
-
-Install as devDependencies:
-
-```
-husky lint-staged prettier eslint eslint-config-prettier @eslint/js
-```
-
-If TypeScript: also `typescript-eslint`.
-If React: also `eslint-plugin-react`.
-
-### 3. Initialize Husky
-
-```bash
-npx husky init
-```
-
-This creates `.husky/` and adds `prepare: "husky"` to package.json.
-
-### 4. Create `.husky/pre-commit`
-
-```
-<pm> run typecheck
-npx lint-staged
-```
-
-Replace `<pm>` with detected package manager. If no `typecheck` script exists in package.json, omit that line and tell the user.
-
-### 5. Configure lint-staged in `package.json`
-
-```json
-{
-  "lint-staged": {
-    "*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.md": [
-      "prettier --write"
-    ]
-  }
-}
-```
-
-### 6. Create ESLint config (if missing)
-
-Only if no `eslint.config.*` exists. Create `eslint.config.mjs` with flat config:
-
-```js
-import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import prettier from "eslint-config-prettier";
-import { defineConfig } from "eslint/config";
-
-export default defineConfig([
-  { ignores: ["**/dist/**", "**/build/**", "**/node_modules/**"] },
-  js.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: { projectService: true },
-    },
-    rules: {
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
-      "@typescript-eslint/no-floating-promises": "error",
-      "@typescript-eslint/no-misused-promises": "error",
-    },
-  },
-  prettier,
-]);
-```
-
-**Adapt**: Add React plugin if React project. Always put `prettier` LAST.
-
-### 7. Create `.prettierignore` (if missing)
-
-```
-node_modules
-dist
-build
-coverage
-pnpm-lock.yaml
-package-lock.json
-yarn.lock
-```
-
-### 8. Verify
-
-Stage a file and run `npx lint-staged` to verify it works.
-
----
-
-## Important
-
-- Do NOT auto-commit after setup — let the user review and commit manually
-- Python: `uv` is the only package manager (never pip)
-- JS/TS: always put `eslint-config-prettier` LAST in ESLint config
-- Husky v9+ doesn't need shebangs in hook files
+- Python: `uv run pre-commit run --all-files`
+- JS/TS: run the hook command directly, then run the package manager lint/typecheck scripts that the hook calls
+- Final report: files changed, installed packages, commands run, remaining manual steps
