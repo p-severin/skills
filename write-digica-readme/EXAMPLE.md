@@ -5,102 +5,102 @@ A fully-filled README in the target style. Use this as a reference for tone, len
 ````markdown
 # Invoice Sync Service
 
-> Serwis synchronizujący faktury z systemu ERP do hurtowni danych.
+> Service that syncs ERP invoices into the data warehouse for finance reporting.
 
-## Po co to istnieje
+## Why this exists
 
-Dział finansów potrzebuje faktur z ERP w hurtowni do raportowania.
-Serwis pobiera je cyklicznie, normalizuje i ładuje do BigQuery.
-Używany przez zespół analityki i miesięczne raporty zarządcze.
+Finance needs ERP invoices in the warehouse for reporting.
+This service pulls them on a schedule, normalizes them, and loads them into BigQuery.
+It supports analytics workflows and monthly management reports.
 
 ## Status
 
-🟢 Działa — produkcyjnie od 2025-Q3.
+Working - production since 2025-Q3.
 
-## Wymagania wstępne
+## Prerequisites
 
 - Docker + Docker Compose
-- `uv` (tylko jeśli uruchamiasz poza kontenerem)
-- Dostęp do VPN firmowego (połączenie z ERP)
+- `uv` (only for running outside the container)
+- Company VPN access (ERP connectivity)
 
-## Szybki start
+## Quick start
 
 ```bash
-# 1. Sklonuj
-git clone git@github.com:firma/invoice-sync.git && cd invoice-sync
+# 1. Clone
+git clone git@github.com:company/invoice-sync.git && cd invoice-sync
 
-# 2. Skonfiguruj środowisko (wartości i "skąd wziąć" są w komentarzach pliku)
+# 2. Configure environment (values and sources are documented in the file)
 cp .env.example .env
 $EDITOR .env
 
-# 3. Uruchom
+# 3. Run
 docker compose up --build
 ```
 
-## Weryfikacja że działa
+## Verify it works
 
-- Health: `curl http://localhost:8000/health` → oczekiwane `{"status":"ok"}`
+- Health: `curl http://localhost:8000/health` -> expected `{"status":"ok"}`
 - Smoke test: `docker compose exec app pytest tests/smoke`
-- Logi startu: `docker compose logs -f app` → szukaj `Sync scheduler started`
+- Startup logs: `docker compose logs -f app` -> look for `Sync scheduler started`
 
-## Konfiguracja
+## Configuration
 
-Wszystkie zmienne środowiskowe + opis i „skąd wziąć wartość" → `.env.example`.
-Skopiuj go do `.env` i wypełnij. Nie commituj `.env`.
+All environment variables, descriptions, and value sources are documented in `.env.example`.
+Copy it to `.env` and fill the values. Do not commit `.env`.
 
-## Częste komendy
+## Common commands
 
 ```bash
-docker compose exec app pytest                  # testy
+docker compose exec app pytest                  # tests
 docker compose exec app ruff check .            # lint
-docker compose exec app pyright                 # typy
-docker compose exec app bash                    # shell w kontenerze
-docker compose exec app alembic upgrade head    # migracje DB
+docker compose exec app pyright                 # typecheck
+docker compose exec app bash                    # container shell
+docker compose exec app alembic upgrade head    # DB migrations
 ```
 
-## Architektura
+## Architecture
 
-Scheduler odpytuje ERP co godzinę, normalizuje dane i ładuje do BigQuery.
-Usługi (docker-compose): `app` (serwis), `db` (Postgres — stan synchronizacji).
-Szczegóły → [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+The scheduler polls ERP hourly, normalizes invoice data, and loads it into BigQuery.
+Services from `docker-compose.yml`: `app` (service), `db` (Postgres sync state).
+Details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Troubleshooting
 
-- **Port 8000 zajęty** → zmień mapowanie w `docker-compose.override.yml`.
-- **`Missing env var ERP_API_KEY`** → uzupełnij `.env` wg `.env.example`.
-- **`connection refused` do ERP** → sprawdź, czy VPN jest aktywny.
-- **Migracje nieaktualne** → `docker compose exec app alembic upgrade head`.
+- **Port 8000 is busy** -> change the mapping in `docker-compose.override.yml`.
+- **`Missing env var ERP_API_KEY`** -> fill `.env` according to `.env.example`.
+- **`connection refused` to ERP** -> confirm VPN is active.
+- **Stale migrations** -> `docker compose exec app alembic upgrade head`.
 
-## Kontakt / owner
+## Owner / contact
 
-Owner: zespół Data Platform — kanał Slack `#data-platform`.
-Pytania i awarie → tam.
+Owner: Data Platform team - Slack `#data-platform`.
+Questions and incidents go there.
 
-## Linki
+## Links
 
-- **Dokumentacja** — [`docs/`](docs/) · [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-- **Google Drive** — folder projektu: `https://drive.google.com/drive/folders/abc123`
-- **Slack** — `#invoice-sync` (dyskusja) · `#data-platform-alerts` (incydenty)
-- **Jira** — projekt INV: `https://firma.atlassian.net/jira/software/projects/INV/board`
-- **Środowiska** — staging `https://invoice-sync.staging.firma.io` · prod `https://invoice-sync.firma.io`
-- **Monitoring** — `https://grafana.firma.io/d/invoice-sync`
+- **Docs** - [`docs/`](docs/) and [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- **Google Drive** - project folder: `https://drive.google.com/drive/folders/abc123`
+- **Slack** - `#invoice-sync` (discussion) and `#data-platform-alerts` (incidents)
+- **Jira** - INV project: `https://company.atlassian.net/jira/software/projects/INV/board`
+- **Environments** - staging `https://invoice-sync.staging.company.io` and prod `https://invoice-sync.company.io`
+- **Monitoring** - `https://grafana.company.io/d/invoice-sync`
 ````
 
 ## How a TODO placeholder looks in-file
 
-When the user skips a question, leave a comment exactly like this — visible in source, invisible in rendered Markdown:
+When the user skips a question, leave a comment exactly like this: visible in source, invisible in rendered Markdown.
 
 ```markdown
-## Kontakt / owner
+## Owner / contact
 
-<!-- TODO: ustal ownera i kanał Slack -->
+<!-- TODO: identify owner and Slack channel -->
 ```
 
 ## Post-write TODO summary (printed to chat, not to file)
 
 ```
-README.md zapisany. Pozostały do uzupełnienia:
-  - Owner / kontakt (sekcja "Kontakt / owner")
-  - Link do monitoringu (sekcja "Linki")
-  - Healthcheck URL (sekcja "Weryfikacja że działa")
+README.md written. Remaining TODOs:
+  - Owner / contact (section "Owner / contact")
+  - Monitoring link (section "Links")
+  - Healthcheck URL (section "Verify it works")
 ```
