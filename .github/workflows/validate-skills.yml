@@ -1,0 +1,28 @@
+name: validate-skills
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install skills-ref
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "git+https://github.com/agentskills/agentskills.git#subdirectory=skills-ref" pyyaml
+      - name: skills-ref validate and catalog check
+        run: python scripts/check-repo.py
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: shellcheck
+        run: find . -name '*.sh' -exec shellcheck --shell=bash {} +
