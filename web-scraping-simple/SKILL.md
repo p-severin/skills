@@ -1,9 +1,10 @@
 ---
 name: web-scraping-simple
-description: "Build small standalone Python scraping proofs after scouting: structured feasibility PoCs, API/static HTML/embedded JSON/light browser paths, Pydantic models, sample output, and basic audit."
-argument-hint: "[url] [fields]"
+description: >-
+  Build small standalone Python scraping proofs after scouting: structured
+  feasibility PoCs, API/static HTML/embedded JSON/light browser paths, Pydantic
+  models, sample output, and basic audit.
 ---
-
 # Web Scraping Simple
 
 Use after `web-scraping-scout` selects feasibility or a small standalone proof. Do not create Scrapy or Crawlee production projects here.

@@ -7,6 +7,10 @@
 - User explicitly requests proxy
 - Anti-bot detection that rotates past UA rotation + delays
 
+## Provider
+
+Default paid proxy is Evomi datacenter (DC). Put the proxy URL in `HTTP_PROXY`/`HTTPS_PROXY`; never hardcode credentials. Ask before switching to residential, enabling rotation, or incurring paid usage. Datacenter is enough unless the access test shows it is blocked.
+
 ## Setup
 
 Proxy URL goes in environment variable, NEVER hardcoded.

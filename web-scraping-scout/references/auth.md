@@ -14,15 +14,14 @@ If detected, inform user and ask for auth details.
 
 ### 1. Form Login (most common)
 
-Use Chrome DevTools MCP to analyze the login flow:
+Use browser DevTools or Playwright to analyze the login flow:
 ```
-1. mcp__chrome-devtools__navigate_page(url=login_url)
-2. mcp__chrome-devtools__take_snapshot() — find the login form fields
-3. mcp__chrome-devtools__fill_form({fields}) — fill username/password
-4. mcp__chrome-devtools__click({uid}) — submit
-5. mcp__chrome-devtools__list_network_requests(resourceTypes=["xhr","fetch","document"])
-   → capture the auth request (POST /login, Set-Cookie headers)
-6. mcp__chrome-devtools__get_network_request(reqid=N) — get full request/response
+1. Open the login URL.
+2. Inspect the login form fields.
+3. Fill username/password.
+4. Submit the form.
+5. Record network requests (XHR, fetch, document) and capture the auth request (POST /login, Set-Cookie headers).
+6. Save the full request/response for replay.
 ```
 
 From the captured request, generate a Scrapy login spider:

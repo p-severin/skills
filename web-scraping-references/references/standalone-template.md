@@ -17,7 +17,7 @@ src/<project>/
 With `pyproject.toml` (uv, hatchling), `.gitignore`, `outputs/` directory.
 
 The 3 templates below are self-contained — copy one, then split out `Item` into `models.py`
-and the JSONL writer into `storage.py` (see `references/storage.md` for export variants:
+and the JSONL writer into `storage.py` (see `references/storage-policy.md` for export variants:
 JSONL, CSV, TSV) once the project grows.
 
 ---

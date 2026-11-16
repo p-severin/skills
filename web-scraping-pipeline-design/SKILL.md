@@ -1,9 +1,11 @@
 ---
 name: web-scraping-pipeline-design
-description: "Design production web scraping pipelines before implementation: framework choice, lifecycle, storage, audit, risk, deploy, and approval gate. Use for recurring, production, long-running, or operational scraping requests after scout/recon."
-argument-hint: "[target] [data goal]"
+description: >-
+  Design production web scraping pipelines before implementation: framework
+  choice, lifecycle, storage, audit, risk, deploy, and approval gate. Use for
+  recurring, production, long-running, or operational scraping requests after
+  web-scraping-scout.
 ---
-
 # Web Scraping Pipeline Design
 
 Use for production scraping architecture. Do not build scraper code here.
@@ -27,6 +29,7 @@ Load only the references needed:
 - `../web-scraping-references/references/downstream-ml-llm.md`
 - `../web-scraping-references/references/checkpointing.md`
 - `../web-scraping-references/references/toolbox.md`
+- `../web-scraping-references/references/scrapy-integration.md`, `testing.md`, `docker.md` for implementation and deploy details
 
 ## Design Rules
 
@@ -84,6 +87,7 @@ Ask the user to approve before routing to implementation.
 
 After approval:
 
-- Scrapy default: route to `scrapy-build`.
-- Browser-interaction-heavy: route to `crawlee-build`.
+- Scrapy default: implement the approved Scrapy project in the target repo.
+- Browser-interaction-heavy: implement with Crawlee-python in the target repo.
 - Rare standalone exception: route to `web-scraping-simple` with explicit rationale.
+- Running scrapers that break or need a quality check: `web-scraping-ops`.

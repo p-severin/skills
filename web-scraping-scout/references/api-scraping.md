@@ -9,18 +9,14 @@ Prefer API scraping over HTML parsing when:
 
 ## Discovering API Endpoints
 
-Use Chrome DevTools MCP to intercept network requests:
+Use browser DevTools or Playwright to intercept network requests:
 
 ```
-1. mcp__chrome-devtools__navigate_page(url=target_url)
-2. mcp__chrome-devtools__list_network_requests(resourceTypes=["xhr", "fetch"])
-3. For each interesting request:
-   mcp__chrome-devtools__get_network_request(reqid=N)
-   → full URL, headers, request body, response body
-4. Interact with page (click next, scroll) to capture pagination calls:
-   mcp__chrome-devtools__click({uid})
-5. mcp__chrome-devtools__list_network_requests(resourceTypes=["xhr", "fetch"])
-   → compare URLs to find pagination pattern
+1. Open the target URL.
+2. Record XHR/fetch requests in the Network panel (or Playwright network events).
+3. For each interesting request, capture the full URL, headers, request body, and response body.
+4. Interact with the page (click next, scroll) to capture pagination calls.
+5. Compare subsequent XHR/fetch URLs to find the pagination pattern.
 ```
 
 ## Standalone Script Pattern
