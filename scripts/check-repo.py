@@ -69,7 +69,7 @@ TOKEN = re.compile(r"\w+|[^\w\s]", re.UNICODE)
 FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 VERSION = re.compile(r"^## (\d+\.\d+\.\d+)\s*$", re.MULTILINE)
 ROW = re.compile(
-    r"^\| \[([a-z0-9-]+)\]\(skills/([a-z0-9-]+)/\1/SKILL\.md\) \| (\d+\.\d+\.\d+) \| (.+) \|$"
+    r"^\| \[([a-z0-9-]+)\]\(skills/([a-z0-9-]+)/\1/SKILL\.md\) \| ([^|]+) \|$"
 )
 
 
@@ -107,7 +107,7 @@ def check_layout(skill: Path, errors: list[str]) -> None:
             errors.append(f"{skill.name}: nested file {rel}")
 
 
-def check_skill(skill: Path, errors: list[str]) -> tuple[str, str]:
+def check_skill(skill: Path, errors: list[str]) -> str:
     text = (skill / "SKILL.md").read_text()
     lines = text.splitlines()
     if len(lines) >= 500:
@@ -116,7 +116,7 @@ def check_skill(skill: Path, errors: list[str]) -> tuple[str, str]:
         meta = load_frontmatter(text)
     except ValueError as exc:
         errors.append(f"{skill.name}: {exc}")
-        return "", ""
+        return ""
 
     extra = set(meta) - SPEC_FIELDS - {"disable-model-invocation"}
     if extra:
@@ -152,7 +152,7 @@ def check_skill(skill: Path, errors: list[str]) -> tuple[str, str]:
             errors.append(
                 f"{skill.name}: changelog {changelog_version or 'missing'} != metadata.version {version}"
             )
-    return version, description if isinstance(description, str) else ""
+    return description if isinstance(description, str) else ""
 
 
 def check_tokens(errors: list[str]) -> None:
@@ -189,10 +189,10 @@ def check_skills_ref(skill: Path, errors: list[str]) -> None:
         errors.append(f"{skill.name}: skills-ref validate failed: {detail}")
 
 
-def check_readme(versions: dict[str, str], descriptions: dict[str, str], errors: list[str]) -> None:
+def check_readme(descriptions: dict[str, str], errors: list[str]) -> None:
     current = None
     seen_groups: list[str] = []
-    rows: list[tuple[str, str, str, str]] = []
+    rows: list[tuple[str, str, str]] = []
     for line in (ROOT / "README.md").read_text().splitlines():
         heading = re.match(r"^## ([A-Za-z]+)\s*$", line)
         if heading:
@@ -202,21 +202,19 @@ def check_readme(versions: dict[str, str], descriptions: dict[str, str], errors:
         match = ROW.match(line)
         if match is None:
             continue
-        name, group, version, description = match.groups()
-        rows.append((name, group, version, description))
+        name, group, description = match.groups()
+        rows.append((name, group, description))
         if current != group:
             errors.append(f"README lists {name} under {current}, expected {group}")
-    found = [name for name, _, _, _ in rows]
+    found = [name for name, _, _ in rows]
     if seen_groups != list(GROUPS):
         errors.append(f"README groups {seen_groups} != {list(GROUPS)}")
     if found != EXPECTED:
         errors.append(f"README skills {found} != catalog {EXPECTED}")
         return
-    for name, group, version, description in rows:
+    for name, group, description in rows:
         if group != GROUP_OF[name]:
             errors.append(f"README path for {name} uses group {group}")
-        if version != versions.get(name):
-            errors.append(f"README version for {name} is {version}, metadata is {versions.get(name)}")
         if description != descriptions.get(name):
             errors.append(f"README description for {name} does not match SKILL.md")
 
@@ -403,20 +401,17 @@ def main() -> int:
 
     check_tree(errors)
 
-    versions: dict[str, str] = {}
     descriptions: dict[str, str] = {}
     for skill in skill_dirs():
         if not (skill / "SKILL.md").is_file():
             errors.append(f"{skill.name}: missing SKILL.md")
             continue
         check_layout(skill, errors)
-        version, description = check_skill(skill, errors)
-        versions[skill.name] = version
-        descriptions[skill.name] = description
+        descriptions[skill.name] = check_skill(skill, errors)
         check_skills_ref(skill, errors)
 
     check_tokens(errors)
-    check_readme(versions, descriptions, errors)
+    check_readme(descriptions, errors)
     check_changelog(errors)
     check_license(errors)
     check_ci(errors)
