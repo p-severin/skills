@@ -2,7 +2,7 @@
 name: web-scraping-references
 description: "Use when another scraping skill points at a shared reference, or when a scraping workflow needs one shared reference loaded."
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 # Web Scraping References
 
@@ -21,7 +21,6 @@ Shared vocabulary, decision rules, and implementation references for scraping sk
 - `references/toolbox.md`: dependency/tool selection and health checks.
 - `references/checkpointing.md`: resume, retries, dedupe, latest-good pointers.
 - `references/standalone-template.md`: standalone Python scraper template.
-- `references/scrapy-integration.md`: Scrapy project integration patterns.
 - `references/testing.md`: fixtures, replay tests, and scraper test strategy.
 - `references/docker.md`: containerizing and running scrapers.
 - `references/utilities.md`: shared helper utilities.

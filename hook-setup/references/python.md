@@ -2,7 +2,7 @@
 
 Use for Python projects with `pyproject.toml`. Prefer `uv` because this dotfiles setup treats it as the Python default.
 
-Apply `references/policy.md` before adding hooks or choosing stages.
+Apply `policy.md` before adding hooks or choosing stages.
 
 ## Inspect
 

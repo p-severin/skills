@@ -3,7 +3,7 @@ name: web-scraping-scout
 description: "Use when the user wants a site scouted before a scraper is built or redesigned, or the scrape request is still unclear."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 # Web Scraping Scout
 
@@ -70,7 +70,7 @@ Route after the report:
 - Recurring, production, or operational scraper: `web-scraping-pipeline-design`
 - Existing scraper broken, output empty, or run quality review: `web-scraping-ops`
 
-Load shared workflow references only as needed: `../web-scraping-references/references/lifecycle.md`, `framework-choice.md`, `toolbox.md`.
+Load shared workflow references only as needed: `../web-scraping-references/references/lifecycle.md`, `../web-scraping-references/references/framework-choice.md`, `../web-scraping-references/references/toolbox.md`.
 
 ## Escalation
 

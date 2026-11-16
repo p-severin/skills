@@ -195,4 +195,4 @@ resp = client.get(url)
 ## When HTTP Client Is Not Enough
 
 If TLS fingerprinting alone doesn't bypass protection (still getting 403/captcha),
-escalate to browser automation → read `references/browsers.md`.
+escalate to browser automation → read `browsers.md`.

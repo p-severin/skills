@@ -2,7 +2,7 @@
 
 Use for projects with `package.json`. Keep commands aligned with the detected package manager.
 
-Apply `references/policy.md` before adding packages, hook stages, or lint/typecheck commands.
+Apply `policy.md` before adding packages, hook stages, or lint/typecheck commands.
 
 ## Inspect
 

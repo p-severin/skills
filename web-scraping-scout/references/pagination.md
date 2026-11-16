@@ -28,7 +28,7 @@ Look for:
 
 If infinite scroll detected:
 - **Scrapy projects** → use scrapy-playwright (Scrapy download handler API — pydoll/camoufox don't integrate with Scrapy).
-- **Standalone scripts** → use pydoll directly (see `references/browsers.md`).
+- **Standalone scripts** → use pydoll directly (see `browsers.md`).
 - **Always check for API endpoints first** — direct API calls avoid browser overhead.
 
 ### 3. URL Pattern Analysis
@@ -92,7 +92,7 @@ def parse_api(self, response):
 
 ### Infinite scroll (scrapy-playwright — for Scrapy projects only)
 
-For standalone scripts, use pydoll directly (see `references/browsers.md`).
+For standalone scripts, use pydoll directly (see `browsers.md`).
 
 ```python
 custom_settings = {

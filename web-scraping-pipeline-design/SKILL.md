@@ -3,7 +3,7 @@ name: web-scraping-pipeline-design
 description: "Use when the user wants a production scraping pipeline designed after scouting and before implementation."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 # Web Scraping Pipeline Design
 
@@ -28,7 +28,7 @@ Load only the references needed:
 - `../web-scraping-references/references/downstream-ml-llm.md`
 - `../web-scraping-references/references/checkpointing.md`
 - `../web-scraping-references/references/toolbox.md`
-- `../web-scraping-references/references/scrapy-integration.md`, `testing.md`, `docker.md` for implementation and deploy details
+- `../web-scraping-references/references/testing.md` and `../web-scraping-references/references/docker.md` for test and deploy details
 
 ## Design Rules
 
@@ -86,7 +86,7 @@ Ask the user to approve before routing to implementation.
 
 After approval:
 
-- Scrapy default: implement the approved Scrapy project in the target repo.
-- Browser-interaction-heavy: implement with Crawlee-python in the target repo.
+- Scrapy default: route to `scrapy-build`.
+- Browser-interaction-heavy: route to `crawlee-build`.
 - Rare standalone exception: route to `web-scraping-simple` with explicit rationale.
 - Running scrapers that break or need a quality check: `web-scraping-ops`.
