@@ -1,10 +1,8 @@
 ---
 name: show-the-change
-description: >-
-  Turns proposed changes and difficult explanations into concrete, verified
-  before-and-after comparisons with a direct recommendation. Use when proposing
-  code, UI, configuration, architecture, data, or process changes, when results
-  are hard to picture, or when explanations remain unclear.
+description: "Use when proposing a change in code, UI, configuration, architecture, data, or process, or when a result is hard to picture."
+metadata:
+  version: "1.0.0"
 ---
 
 # Show the Change

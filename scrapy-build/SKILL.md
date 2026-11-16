@@ -1,7 +1,9 @@
 ---
 name: scrapy-build
-description: "Create production Scrapy projects and spiders: API/listing-detail crawls, pipelines, middleware, pagination, sample/full modes, manifest, parsed/curated outputs, audit, and tests."
-argument-hint: "[url] [spider]"
+description: "Use when the user wants a production Scrapy project or spider created."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # Scrapy Build

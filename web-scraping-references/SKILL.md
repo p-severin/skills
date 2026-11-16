@@ -1,10 +1,8 @@
 ---
 name: web-scraping-references
-description: >-
-  Shared web-scraping reference library (lifecycle, framework choice, storage,
-  quality, risk, runbooks, templates, testing, deploy, analysis). Load a single
-  reference when another scraping skill points to it or when designing a
-  scraping workflow.
+description: "Use when another scraping skill points at a shared reference, or when a scraping workflow needs one shared reference loaded."
+metadata:
+  version: "1.0.0"
 ---
 # Web Scraping References
 

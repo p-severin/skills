@@ -1,6 +1,9 @@
 ---
 name: kolbs-reflection
-description: Guide the user through Justin Sung's Kolb's Experimental Cycle (Experience → Reflection → Abstraction → Experiment) with socratic challenge, hard gates on input quality, and persistence to the user's Obsidian vault. Use when user says "kolb", "zróbmy kolba", "reflection cycle", "chcę zreflektować", "marginal gain", "justin sung", or wants to deeply reflect on a learning/coding/work process to extract root-cause patterns and run targeted experiments. Also trigger when user says "chcę popracować nad procesem X" or "popraw mój proces nauki/kodowania" — suggest the skill before they ask.
+description: "Use when the user asks for a Kolb cycle reflection or a socratic pass through Experience, Reflection, Abstraction, and Experiment."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # Kolb's Reflection
@@ -37,7 +40,7 @@ Then validate against 4 criteria. **Do not proceed until all 4 pass:**
 - [ ] **Recent** — last few days ideal, max ~2 weeks
 - [ ] **Concise** — fits in 1 sentence
 
-If any fails, reframe with a question that pulls the user toward the missing dimension. Examples in `EXAMPLES.md`. Once it passes, also ask: **"What would a marginal gain look like here?"** (don't validate this — it primes the rest of the cycle).
+If any fails, reframe with a question that pulls the user toward the missing dimension. Examples in `references/EXAMPLES.md`. Once it passes, also ask: **"What would a marginal gain look like here?"** (don't validate this — it primes the rest of the cycle).
 
 ### 2. Reflection
 
@@ -53,7 +56,7 @@ Ask these in order. Use socratic grilling (max 2-3 follow-ups) when answers are 
 **Stuck-handling** (when user says "nie wiem" / "nic mi nie przychodzi"):
 - Reframe the question from a different angle ("OK, co pomyślałeś tuż przed tym jak X?")
 - Offer a pattern-priming example **from a different life domain** (never from their current situation — risk of suggestion)
-- If still stuck after 2 reframes: log it as a self-awareness gap, move on. See `REFERENCE.md` "When user is stuck".
+- If still stuck after 2 reframes: log it as a self-awareness gap, move on. See `references/REFERENCE.md` "When user is stuck".
 
 **Soft check-in at end of Step 2:** "Jesteśmy w połowie. Czujesz, że refleksja jest wystarczająco głęboka, by zbudować na niej Abstraction? Możemy też zapisać draft i wrócić."
 
@@ -190,5 +193,5 @@ Bez tej sekcji cykl ginie w plikach. To jest wynik dla użytkownika.
 
 ## Detailed guidelines
 
-- Per-step criteria, depth signals, and Sung's full rationale: see [REFERENCE.md](REFERENCE.md)
-- Reframing examples (good vs. bad Experiences, Abstractions, Experiments): see [EXAMPLES.md](EXAMPLES.md)
+- Per-step criteria, depth signals, and Sung's full rationale: see [REFERENCE.md](references/REFERENCE.md)
+- Reframing examples (good vs. bad Experiences, Abstractions, Experiments): see [EXAMPLES.md](references/EXAMPLES.md)

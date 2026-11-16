@@ -1,6 +1,9 @@
 ---
 name: obsidian-notes
-description: "Search, create, edit, summarize, and organize notes in the user's Obsidian vault."
+description: "Use when the user wants notes found, created, edited, summarized, or organized in an Obsidian vault."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # Obsidian Vault

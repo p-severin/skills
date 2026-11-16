@@ -1,9 +1,8 @@
 ---
 name: plain-talk
-description: >-
-  Makes every user-facing message brief, direct, and easy to understand.
-  Use when producing any reply, explanation, question, progress update,
-  summary, recommendation, warning, or error.
+description: "Use when writing any reply, explanation, question, progress update, summary, recommendation, warning, or error for a person."
+metadata:
+  version: "1.0.0"
 ---
 
 # Plain talk

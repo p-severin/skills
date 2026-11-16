@@ -1,7 +1,9 @@
 ---
 name: scrapy-deploy
-description: "Deploy existing Scrapy projects with Docker, server runs, cron/systemd scheduling, stats JSON, optional SpiderMon alerts, audit/report references, retention notes, and runbook alignment."
-argument-hint: "[docker] [server]"
+description: "Use when the user wants an existing Scrapy project deployed or scheduled."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # Scrapy Deploy

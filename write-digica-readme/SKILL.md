@@ -1,6 +1,9 @@
 ---
 name: write-digica-readme
-description: "Digica README.md audit/write: new, stale, weak; software and data science repos."
+description: "Use when the user wants a Digica README written or audited."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # write-digica-readme
@@ -44,7 +47,7 @@ Use only for explicit Digica README authoring or audit requests. Ignore incident
    - existing README headings
 3. Classify project type as software, data science, or mixed. Present evidence and ask for confirmation.
 4. Present mode, detected facts, and conflicts; ask for confirmation or corrections.
-5. Load [STANDARD.md](STANDARD.md); walk sections in Digica order for the confirmed project type.
+5. Load [STANDARD.md](references/STANDARD.md); walk sections in Digica order for the confirmed project type. A filled example is in [EXAMPLE.md](references/EXAMPLE.md).
 6. For each section:
    - state what the repo already proves
    - show the proposed section or diff

@@ -1,7 +1,9 @@
 ---
 name: crawlee-build
-description: "Build Crawlee-python production crawlers for browser-context-heavy, SPA interaction-heavy, scroll/click/stateful UI, or adaptive browser/HTTP scraping after production design approval."
-argument-hint: "[url] [what to extract]"
+description: "Use when the user asks for a Crawlee-python crawler, or a production design has approved Crawlee for a browser-heavy target."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # Crawlee Build
@@ -31,7 +33,7 @@ Always included when parsing text: dateparser (dates), ftfy (Unicode cleanup).
 ```
 Step 1: Context    → Analyze target, select crawler type
 Step 2: Docs       → Fetch current crawlee docs via Context7 if needed
-Step 3: Generate   → Read references/templates.md → generate code
+Step 3: Generate   → Run scripts/apply_template.py to copy a template, then edit it
 Step 4: Quality    → ruff check + ruff format + pyright
 Step 5: Test       → Read references/testing.md → generate tests, run pytest
 Step 6: Validate   → Read references/analysis.md → test run, analyze output
@@ -90,7 +92,7 @@ Complex (4+ handlers,       → Modular project:
   routing, pipeline)            crawler.py, handlers.py, models.py, config.py
 ```
 
-Read `references/templates.md` for code templates.
+Read `references/templates.md` for the template source. Apply one with `python scripts/apply_template.py --template single-file|router|modular --dest <dir>`. The script writes only the fenced files in that section. A second run leaves matching files in place and stops if a file would change. It does not create files that the reference only names in the tree.
 
 - Proxy → read `references/proxy.md` (ask about proxy EARLY)
 - Storage → read `references/storage.md` (default: JSONL via push_data)

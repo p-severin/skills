@@ -1,9 +1,9 @@
 ---
 name: web-scraping-simple
-description: >-
-  Build small standalone Python scraping proofs after scouting: structured
-  feasibility PoCs, API/static HTML/embedded JSON/light browser paths, Pydantic
-  models, sample output, and basic audit.
+description: "Use when the user wants a small standalone Python scraping proof after a scout."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 # Web Scraping Simple
 

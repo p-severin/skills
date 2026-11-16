@@ -1,7 +1,9 @@
 ---
 name: hook-setup
-description: "Set up or repair Python and JS/TS pre-commit hooks with repo-native tooling."
-argument-hint: "[repo path] [python|js|both]"
+description: "Use when the user wants Python or JS/TS pre-commit hooks set up or repaired."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # Setup Pre-Commit Multi

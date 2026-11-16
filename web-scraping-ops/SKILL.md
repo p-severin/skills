@@ -1,9 +1,9 @@
 ---
 name: web-scraping-ops
-description: >-
-  Use when a scraper already exists: debug empty output,
-  selector/API/auth/pagination drift, 403/429, or flaky proxy/browser issues,
-  and audit run quality before trusting data.
+description: "Use when a scraper already exists and the user wants a failing run diagnosed or a run audited before the data is trusted."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 # Web Scraping Ops
 
@@ -21,9 +21,9 @@ Use when a scraper already exists: after a run, before trusting data, or when it
 2. Read `../web-scraping-references/references/quality-gates.md` and `../web-scraping-references/references/analysis.md`.
 3. Report run metadata: run ID, scraper version, schema version, start/end time, duration, source scope, output paths.
 4. Check record counts, per-stage counts, status distribution, errors/failures, and approximate throughput.
-5. For each required field, report fill rate, unique count, type consistency, examples, and suspicious constants.
-6. Check duplicates, stable ID/key behavior, schema/Pydantic validation, and sample good/bad records.
-7. Compare to a previous good run when available: records gained/lost, fill-rate deltas, duplicate deltas, new errors, schema drift.
+5. Compute fill rate, unique count, duplicates, and the delta against a previous run with `python scripts/run_metrics.py`. Pass the parsed or curated JSONL, `--id-field` when records have a stable key, `--fields` for the required fields, and `--previous` when a prior good run exists. Report the script's JSON. Do not recompute those four numbers by hand.
+6. Check type consistency, examples, suspicious constants, schema/Pydantic validation, and sample good/bad records.
+7. When `--previous` was passed, report `delta.records`, each `delta.fill_rate` entry, and `delta.duplicate_extra`, plus new errors and schema drift.
 8. State whether the run is trusted, suspicious, or blocked. Include the evidence and the next action.
 
 ## Diagnose and Fix

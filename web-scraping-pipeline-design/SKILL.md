@@ -1,10 +1,9 @@
 ---
 name: web-scraping-pipeline-design
-description: >-
-  Design production web scraping pipelines before implementation: framework
-  choice, lifecycle, storage, audit, risk, deploy, and approval gate. Use for
-  recurring, production, long-running, or operational scraping requests after
-  web-scraping-scout.
+description: "Use when the user wants a production scraping pipeline designed after scouting and before implementation."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 # Web Scraping Pipeline Design
 

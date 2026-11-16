@@ -1,7 +1,9 @@
 ---
 name: mlflow-analyzer
-description: "Analyze traditional MLflow experiment runs, rankings, metrics, feature sets, and model candidates."
-argument-hint: "[experiment name or fetched-results.json]"
+description: "Use when the user wants traditional MLflow experiment runs ranked or compared."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # MLflow Analyzer

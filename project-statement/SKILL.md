@@ -1,6 +1,9 @@
 ---
 name: project-statement
-description: "Generate or update project statement documents."
+description: "Use when the user wants a project statement created or updated."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # project-statement
@@ -23,7 +26,7 @@ Maintains `PROJECT_STATEMENT.yaml` (source of truth, gitignored) and renders it 
    - Present, valid → **render mode** (step 9 only).
    - Present, missing required fields → run interview only for missing fields, then render.
 
-2. **Scan repo** for pre-fill data. See SCHEMA.md § "Pre-fill scan list". Build a detection summary.
+2. **Scan repo** for pre-fill data. See references/SCHEMA.md § "Pre-fill scan list". Build a detection summary.
 
 3. **Confirm `project_type`** — auto-detect from signals, present, confirm with single Y/n prompt. Defaults: notebooks + ML deps + `.dvc/` → `data-science`; otherwise `software`.
 
@@ -45,7 +48,7 @@ Maintains `PROJECT_STATEMENT.yaml` (source of truth, gitignored) and renders it 
    - Tool picker (DS-related at end): Slack, GDrive, Jira, Confluence, NAS, Miro, MLFlow, DVC, CVAT, Label Studio, Other. **`url` is optional** — do NOT prompt for a **Slack** URL (record the entry with just an optional note); omit `url` for any tool with no useful link.
    - **Datasets in DS projects is mandatory** — must have ≥ 1 entry. A TODO entry counts.
 
-6. **Validate** — see SCHEMA.md § "Validation rules". On failure, re-prompt for the offending fields only.
+6. **Validate** — see references/SCHEMA.md § "Validation rules". On failure, re-prompt for the offending fields only.
 
 7. **Write YAML** to `PROJECT_STATEMENT.yaml` at project root.
 
@@ -70,6 +73,6 @@ Maintains `PROJECT_STATEMENT.yaml` (source of truth, gitignored) and renders it 
 
 ## References
 
-- Full schema, enums, scan list, validation rules, icon registry → [SCHEMA.md](SCHEMA.md)
-- Worked example with filled YAML + rendered MD → [EXAMPLE.md](EXAMPLE.md)
+- Full schema, enums, scan list, validation rules, icon registry → [SCHEMA.md](references/SCHEMA.md)
+- Worked example with filled YAML + rendered MD → [EXAMPLE.md](references/EXAMPLE.md)
 - Deterministic renderer → [scripts/render.py](scripts/render.py)

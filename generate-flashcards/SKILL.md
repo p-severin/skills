@@ -1,7 +1,9 @@
 ---
 name: generate-flashcards
-description: "Generate atomic flashcards from text, files, or URLs; JSON output; depth controls."
-argument-hint: "[content or file path or URL] [--depth low|medium|high] [--pages 1-10] [--lang pl|en|source|...]"
+description: "Use when the user wants flashcards from text, a file, or a URL."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # Flashcard Generator
@@ -11,14 +13,14 @@ Generate ultra-atomic flashcards as self-contained learning paths using Wozniak'
 ## Input Detection
 
 Detect input type:
-1. **File path**: starts with `/`, `./`, `~`, or common extensions → read the file using the agent's available file-reading capability
+1. **File path**: starts with `/`, `./`, `~`, or common extensions → run `python scripts/fetch_text.py PATH` and use stdout as the source text. The script reads text and HTML. For a PDF it uses `pdftotext` or `pypdf` when one of those is available.
    - For PDFs >10 pages: ask user which pages to focus on, or use `--pages 1-10` argument
-2. **URL**: starts with `http://` or `https://` → fetch the page using the agent's available web-reading capability
+2. **URL**: starts with `http://` or `https://` → run `python scripts/fetch_text.py URL` and use stdout. Do not fetch the page another way.
 3. **Raw text**: everything else → process directly
 
 ## Agent Compatibility
 
-Do not depend on specific host tool names. Use whatever equivalent capabilities the current agent provides for reading files, fetching URLs, and asking the user for clarification.
+Do not depend on specific host tool names. Use whatever equivalent capabilities the current agent provides for asking the user for clarification. Fetch URLs and extract file text only with `scripts/fetch_text.py`.
 
 ## Output Language
 

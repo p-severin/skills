@@ -1,7 +1,9 @@
 ---
 name: anki-export
-description: "Export flashcard JSON to Anki .apkg decks with the bundled genanki converter."
-argument-hint: "[flashcards.json] [--deck name] [--output file.apkg]"
+description: "Use when the user wants flashcard JSON turned into an Anki .apkg deck."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 
 # Anki Export

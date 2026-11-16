@@ -1,9 +1,9 @@
 ---
 name: web-scraping-scout
-description: >-
-  Use first before building or redesigning any scraper, or for an unclear scrape
-  request: pick the cheapest complete extraction route, prove it on a 20–50
-  record sample with curl_cffi, and estimate cost.
+description: "Use when the user wants a site scouted before a scraper is built or redesigned, or the scrape request is still unclear."
+disable-model-invocation: true
+metadata:
+  version: "1.0.0"
 ---
 # Web Scraping Scout
 
