@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""Convert flashcard JSON to Anki .apkg format using genanki."""
 
 import argparse
 import hashlib

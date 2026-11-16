@@ -35,8 +35,7 @@ npx skills add p-severin/skills --skill <name>
 
 | Skill | When to use |
 | --- | --- |
-| [generate-flashcards](skills/learning/generate-flashcards/SKILL.md) | Use when the user wants flashcards from text, a file, or a URL. |
-| [anki-export](skills/learning/anki-export/SKILL.md) | Use when the user wants flashcard JSON turned into an Anki .apkg deck. |
+| [anki-flashcards](skills/learning/anki-flashcards/SKILL.md) | Use when the user wants flashcards from text, a file, or a URL, or wants those cards as an Anki .apkg deck. |
 | [kolbs-reflection](skills/learning/kolbs-reflection/SKILL.md) | Use when the user asks for a Kolb cycle reflection or a socratic pass through Experience, Reflection, Abstraction, and Experiment. |
 
 ## Productivity

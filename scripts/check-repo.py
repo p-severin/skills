@@ -52,8 +52,7 @@ GROUPS = {
         "write-digica-readme",
     ),
     "learning": (
-        "generate-flashcards",
-        "anki-export",
+        "anki-flashcards",
         "kolbs-reflection",
     ),
     "productivity": (

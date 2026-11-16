@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0
+
+Replace generate-flashcards and anki-export with anki-flashcards. Card generation and `.apkg` export now live in that one skill. The catalog has 17 skills.
+
 ## 2.0.1
 
 Drop the Version column from the four README catalog tables. Skill metadata versions and skill changelogs stay.
