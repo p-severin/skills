@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check skill layout, catalog, changelogs, and the Agent Skills spec.
+"""Check skill layout, catalog, changelogs, relative links, and the Agent Skills spec.
 
 skills-ref rejects the Claude Code field disable-model-invocation. The runtime
 only reads that field at the top of SKILL.md, so this check removes that one
@@ -249,6 +249,88 @@ def check_license(errors: list[str]) -> None:
         errors.append("LICENSE is not the existing MIT license")
 
 
+FENCE = re.compile(r"(?ms)^```.*?^```\n?")
+MD_LINK = re.compile(r"\[[^\]\n]*\]\(([^)\s]+)")
+CODE_PATH = re.compile(r"`([^`\n]+)`")
+HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
+EXTERNAL = ("http://", "https://", "mailto:", "ftp://")
+
+
+def markdown_prose(text: str) -> str:
+    return FENCE.sub("", text)
+
+
+def heading_slugs(text: str) -> set[str]:
+    counts: dict[str, int] = {}
+    slugs: set[str] = set()
+    for line in markdown_prose(text).splitlines():
+        match = HEADING.match(line)
+        if match is None:
+            continue
+        raw = re.sub(r"`+", "", match.group(2)).lower()
+        slug = re.sub(r"[^\w\s-]", "", raw, flags=re.UNICODE)
+        slug = re.sub(r"\s+", "-", slug).strip("-")
+        if not slug:
+            continue
+        seen = counts.get(slug, 0)
+        counts[slug] = seen + 1
+        slugs.add(slug if seen == 0 else f"{slug}-{seen}")
+    return slugs
+
+
+CROSS_SKILL_PREFIXES = ("../", "references/")
+
+
+def skill_path(token: str) -> str | None:
+    path = token.split("#", 1)[0].split("?", 1)[0]
+    if not path.endswith(".md"):
+        return None
+    if any(char in path for char in " <>*|"):
+        return None
+    if path.startswith(CROSS_SKILL_PREFIXES):
+        return token
+    return None
+
+
+def check_one_link(source: Path, url: str, slugs: dict[Path, set[str]], errors: list[str]) -> None:
+    root = ROOT.resolve()
+    target_url, _, fragment = url.partition("#")
+    if not target_url:
+        destination = source.resolve()
+    else:
+        destination = (source.parent / target_url.split("?", 1)[0]).resolve()
+        if root != destination and root not in destination.parents:
+            errors.append(f"{source.relative_to(ROOT)}: link leaves the repo: {url}")
+            return
+        if not destination.is_file():
+            errors.append(f"{source.relative_to(ROOT)}: link does not resolve: {url}")
+            return
+    if fragment and fragment not in slugs.get(destination, set()):
+        errors.append(f"{source.relative_to(ROOT)}: missing heading #{fragment} in {url}")
+
+
+def check_links(errors: list[str]) -> None:
+    markdown = [
+        path
+        for path in ROOT.rglob("*.md")
+        if path.is_file() and ".git" not in path.parts
+    ]
+    slugs = {
+        path.resolve(): heading_slugs(path.read_text(encoding="utf-8")) for path in markdown
+    }
+    for path in markdown:
+        prose = markdown_prose(path.read_text(encoding="utf-8"))
+        for url in MD_LINK.findall(prose):
+            if url.startswith(EXTERNAL) or url.startswith("//"):
+                continue
+            check_one_link(path, url, slugs, errors)
+        for token in CODE_PATH.findall(prose):
+            url = skill_path(token)
+            if url is None or url.startswith(EXTERNAL):
+                continue
+            check_one_link(path, url, slugs, errors)
+
+
 def main() -> int:
     errors: list[str] = []
     if (ROOT / ".claude-plugin").exists() or (ROOT / ".cursor-plugin").exists():
@@ -272,6 +354,7 @@ def main() -> int:
     check_license(errors)
     check_ci(errors)
     check_portable_scripts(errors)
+    check_links(errors)
 
     if errors:
         for error in errors:
