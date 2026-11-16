@@ -35,6 +35,10 @@ The samples in [examples](references/examples.md) use English placeholders. The 
 
 For a PDF longer than 10 pages, ask which pages to keep, then drop the other pages from the extracted text. The script has no page argument.
 
+### Keep the vital few concepts
+
+Identify the key concepts with an 80/20 filter before you assign priority or depth. Keep the vital few. Drop the long tail. A long chapter does not become a card for every sentence. `--depth high` adds angles on the concepts you kept. It does not bring the dropped concepts back.
+
 ### Show a learning path when the source is large
 
 For a short, unambiguous source that will likely produce 10 cards or fewer, skip the outline and write the cards.

@@ -96,7 +96,7 @@ Always apply these rules.
 4. Strip filler from the answer. Prefer a fragment. Write "CSS's conflict-resolution mechanism." Do not write "The cascade is the mechanism CSS uses to resolve conflicts."
 5. When two concepts are easy to confuse, add a distinguishing context, a contrast, or an explicit comparison card.
 6. For a key fact, add the reverse card when the selected depth asks for it. Same fact, other direction.
-7. Prefer a surprising fact, a real consequence, or a concrete example over a flat definition.
+7. Use surprising facts, real consequences ("What happens if X fails?"), and dramatic examples. Engage emotions - a card that makes you feel something is easier to remember.
 8. Foundational cards come before cards that depend on them. The sequence should teach someone who is new to the source.
 
 Apply these when they fit the card.
