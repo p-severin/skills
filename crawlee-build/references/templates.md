@@ -263,6 +263,20 @@ def register_listing_handlers(crawler: AdaptivePlaywrightCrawler) -> None:
                 ])
 ```
 
+### handlers/detail.py
+
+```python
+from crawlee.crawlers import AdaptivePlaywrightCrawler, AdaptivePlaywrightCrawlingContext
+
+
+def register_detail_handlers(crawler: AdaptivePlaywrightCrawler) -> None:
+    @crawler.router.handler(label="detail")
+    async def detail(context: AdaptivePlaywrightCrawlingContext) -> None:
+        title_tag = context.parsed_content.find("h1")
+        title = title_tag.get_text(strip=True) if title_tag else ""
+        await context.push_data({"url": context.request.url, "title": title})
+```
+
 ### .env.template
 
 ```bash
