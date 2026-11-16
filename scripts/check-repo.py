@@ -33,31 +33,43 @@ MODEL_INVOKED = {
     "show-the-change",
     "web-scraping-references",
 }
-EXPECTED = [
-    "anki-export",
-    "crawlee-build",
-    "generate-flashcards",
-    "hook-setup",
-    "kolbs-reflection",
-    "mlflow-analyzer",
-    "obsidian-notes",
-    "plain-talk",
-    "project-statement",
-    "scrapy-build",
-    "scrapy-deploy",
-    "show-the-change",
-    "web-scraping-ops",
-    "web-scraping-pipeline-design",
-    "web-scraping-references",
-    "web-scraping-scout",
-    "web-scraping-simple",
-    "write-digica-readme",
-]
+GROUPS = {
+    "scraping": (
+        "web-scraping-scout",
+        "web-scraping-simple",
+        "web-scraping-pipeline-design",
+        "web-scraping-ops",
+        "web-scraping-references",
+        "scrapy-build",
+        "scrapy-deploy",
+        "crawlee-build",
+    ),
+    "engineering": (
+        "hook-setup",
+        "show-the-change",
+        "project-statement",
+        "mlflow-analyzer",
+        "write-digica-readme",
+    ),
+    "learning": (
+        "generate-flashcards",
+        "anki-export",
+        "kolbs-reflection",
+    ),
+    "productivity": (
+        "obsidian-notes",
+        "plain-talk",
+    ),
+}
+GROUP_OF = {name: group for group, names in GROUPS.items() for name in names}
+EXPECTED = [name for names in GROUPS.values() for name in names]
+ROOT_DIRS = {".github", "docs", "scripts", "skills"}
+ROOT_FILES = {"CHANGELOG.md", "LICENSE", "README.md", "decisions.tsv"}
 TOKEN = re.compile(r"\w+|[^\w\s]", re.UNICODE)
 FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 VERSION = re.compile(r"^## (\d+\.\d+\.\d+)\s*$", re.MULTILINE)
 ROW = re.compile(
-    r"^\| \[([a-z0-9-]+)\]\(\1/SKILL\.md\) \| (\d+\.\d+\.\d+) \| (.+) \|$"
+    r"^\| \[([a-z0-9-]+)\]\(skills/([a-z0-9-]+)/\1/SKILL\.md\) \| (\d+\.\d+\.\d+) \| (.+) \|$"
 )
 
 
@@ -66,11 +78,7 @@ def token_count(text: str) -> int:
 
 
 def skill_dirs() -> list[Path]:
-    found = []
-    for child in sorted(ROOT.iterdir()):
-        if child.is_dir() and (child / "SKILL.md").is_file():
-            found.append(child)
-    return found
+    return [ROOT / "skills" / GROUP_OF[name] / name for name in EXPECTED]
 
 
 def load_frontmatter(text: str) -> dict:
@@ -182,16 +190,31 @@ def check_skills_ref(skill: Path, errors: list[str]) -> None:
 
 
 def check_readme(versions: dict[str, str], descriptions: dict[str, str], errors: list[str]) -> None:
-    rows = {}
+    current = None
+    seen_groups: list[str] = []
+    rows: list[tuple[str, str, str, str]] = []
     for line in (ROOT / "README.md").read_text().splitlines():
+        heading = re.match(r"^## ([A-Za-z]+)\s*$", line)
+        if heading:
+            current = heading.group(1).lower()
+            seen_groups.append(current)
+            continue
         match = ROW.match(line)
-        if match:
-            rows[match.group(1)] = (match.group(2), match.group(3))
-    if set(rows) != set(EXPECTED):
-        errors.append(f"README skills {sorted(rows)} != catalog {EXPECTED}")
+        if match is None:
+            continue
+        name, group, version, description = match.groups()
+        rows.append((name, group, version, description))
+        if current != group:
+            errors.append(f"README lists {name} under {current}, expected {group}")
+    found = [name for name, _, _, _ in rows]
+    if seen_groups != list(GROUPS):
+        errors.append(f"README groups {seen_groups} != {list(GROUPS)}")
+    if found != EXPECTED:
+        errors.append(f"README skills {found} != catalog {EXPECTED}")
         return
-    for name in EXPECTED:
-        version, description = rows[name]
+    for name, group, version, description in rows:
+        if group != GROUP_OF[name]:
+            errors.append(f"README path for {name} uses group {group}")
         if version != versions.get(name):
             errors.append(f"README version for {name} is {version}, metadata is {versions.get(name)}")
         if description != descriptions.get(name):
@@ -241,6 +264,48 @@ def check_ci(errors: list[str]) -> None:
         errors.append("workflow must not name macOS or Windows runners")
     if re.search(r"(?m)^strategy:\s*$|matrix:", text):
         errors.append("workflow must not use a matrix")
+
+
+def check_tree(errors: list[str]) -> None:
+    for child in ROOT.iterdir():
+        if child.name == ".git":
+            continue
+        if child.is_dir() and child.name not in ROOT_DIRS:
+            errors.append(f"unexpected root directory {child.name}")
+        elif child.is_file() and child.name not in ROOT_FILES:
+            errors.append(f"unexpected root file {child.name}")
+    for name in sorted(ROOT_FILES):
+        if not (ROOT / name).is_file():
+            errors.append(f"missing root file {name}")
+    for name in (".github", "scripts", "skills"):
+        if not (ROOT / name).is_dir():
+            errors.append(f"missing root directory {name}")
+
+    skills_root = ROOT / "skills"
+    if not skills_root.is_dir():
+        return
+    found_groups = sorted(path.name for path in skills_root.iterdir() if path.is_dir())
+    loose = sorted(path.name for path in skills_root.iterdir() if not path.is_dir())
+    if loose:
+        errors.append(f"unexpected files in skills/: {loose}")
+    if found_groups != sorted(GROUPS):
+        errors.append(f"skill groups {found_groups} != {sorted(GROUPS)}")
+    for group, names in GROUPS.items():
+        group_dir = skills_root / group
+        if not group_dir.is_dir():
+            continue
+        found = sorted(path.name for path in group_dir.iterdir() if path.is_dir())
+        group_loose = sorted(path.name for path in group_dir.iterdir() if not path.is_dir())
+        if group_loose:
+            errors.append(f"{group}: unexpected files {group_loose}")
+        if found != sorted(names):
+            errors.append(f"{group} skills {found} != {sorted(names)}")
+
+
+def check_changelog(errors: list[str]) -> None:
+    text = (ROOT / "CHANGELOG.md").read_text()
+    if VERSION.search(text) is None:
+        errors.append("CHANGELOG.md needs a ## x.y.z heading")
 
 
 def check_license(errors: list[str]) -> None:
@@ -336,13 +401,14 @@ def main() -> int:
     if (ROOT / ".claude-plugin").exists() or (ROOT / ".cursor-plugin").exists():
         errors.append("plugin manifest is not allowed")
 
-    found = [path.name for path in skill_dirs()]
-    if found != EXPECTED:
-        errors.append(f"skill directories {found} != {EXPECTED}")
+    check_tree(errors)
 
     versions: dict[str, str] = {}
     descriptions: dict[str, str] = {}
     for skill in skill_dirs():
+        if not (skill / "SKILL.md").is_file():
+            errors.append(f"{skill.name}: missing SKILL.md")
+            continue
         check_layout(skill, errors)
         version, description = check_skill(skill, errors)
         versions[skill.name] = version
@@ -351,6 +417,7 @@ def main() -> int:
 
     check_tokens(errors)
     check_readme(versions, descriptions, errors)
+    check_changelog(errors)
     check_license(errors)
     check_ci(errors)
     check_portable_scripts(errors)

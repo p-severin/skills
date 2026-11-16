@@ -21,13 +21,15 @@ link_one() {
 
 shopt -s nullglob
 found=0
-for skill in "$root"/*/; do
-  if [[ -f "${skill}SKILL.md" ]]; then
-    skill_dir=${skill%/}
-    link_one "$home_dir/.claude/skills" "$skill_dir"
-    link_one "$home_dir/.agents/skills" "$skill_dir"
-    found=$((found + 1))
-  fi
+for group_dir in "$root"/skills/*/; do
+  for skill in "$group_dir"*/; do
+    if [[ -f "${skill}SKILL.md" ]]; then
+      skill_dir=${skill%/}
+      link_one "$home_dir/.claude/skills" "$skill_dir"
+      link_one "$home_dir/.agents/skills" "$skill_dir"
+      found=$((found + 1))
+    fi
+  done
 done
 
 if [[ "$found" -eq 0 ]]; then
