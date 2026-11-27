@@ -1,9 +1,8 @@
 ---
 name: web-scraping-ops
 description: "Use when a scraper already exists and the user wants a failing run diagnosed or a run audited before the data is trusted."
-disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 # Web Scraping Ops
 

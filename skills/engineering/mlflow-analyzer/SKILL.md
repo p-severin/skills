@@ -1,9 +1,8 @@
 ---
 name: mlflow-analyzer
 description: "Use when the user wants traditional MLflow experiment runs ranked or compared."
-disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # MLflow Analyzer

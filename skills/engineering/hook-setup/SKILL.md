@@ -1,9 +1,8 @@
 ---
 name: hook-setup
 description: "Use when the user wants Python or JS/TS pre-commit hooks set up or repaired."
-disable-model-invocation: true
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
 ---
 
 # Setup Pre-Commit Multi

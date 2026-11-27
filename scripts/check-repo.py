@@ -29,8 +29,11 @@ SPEC_FIELDS = {
 }
 ALLOWED_DIRS = {"references", "scripts", "assets"}
 MODEL_INVOKED = {
+    "hook-setup",
+    "mlflow-analyzer",
     "plain-talk",
     "show-the-change",
+    "web-scraping-ops",
     "web-scraping-references",
 }
 GROUPS = {
