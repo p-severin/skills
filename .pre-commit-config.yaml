@@ -9,3 +9,9 @@ repos:
           - pyyaml
           - git+https://github.com/agentskills/agentskills.git#subdirectory=skills-ref
         pass_filenames: false
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.6
+    hooks:
+      - id: ruff-check
+        name: ruff pyflakes
+        args: [--no-cache, --select, F]
