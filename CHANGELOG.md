@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0.0
+
+Remove write-digica-readme. The catalog has 19 skills.
+
 ## 3.2.0
 
 Add skill-create and skill-refine under productivity for creating, linting,

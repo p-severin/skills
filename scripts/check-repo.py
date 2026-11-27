@@ -50,7 +50,6 @@ GROUPS = {
         "project-statement",
         "to-contract-tickets",
         "mlflow-analyzer",
-        "write-digica-readme",
     ),
     "learning": (
         "anki-flashcards",

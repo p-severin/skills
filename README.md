@@ -47,7 +47,6 @@ The hook installs `skills-ref` in an isolated environment and runs
 | [project-statement](skills/engineering/project-statement/SKILL.md) | Use when the user wants a project statement created or updated. |
 | [to-contract-tickets](skills/engineering/to-contract-tickets/SKILL.md) | Use when the user wants a plan, spec, or conversation turned into tracker tickets whose interface, rules, and test names are fixed in a code contract before implementation. |
 | [mlflow-analyzer](skills/engineering/mlflow-analyzer/SKILL.md) | Use when the user wants traditional MLflow experiment runs ranked or compared. |
-| [write-digica-readme](skills/engineering/write-digica-readme/SKILL.md) | Use when the user wants a Digica README written or audited. |
 
 ## Learning
 
