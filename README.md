@@ -65,3 +65,4 @@ After changing `disable-model-invocation` in a `SKILL.md`, run
 | [plain-talk](skills/productivity/plain-talk/SKILL.md) | Use when writing any reply, explanation, question, progress update, summary, recommendation, warning, or error for a person. |
 | [skill-create](skills/productivity/skill-create/SKILL.md) | Use when creating a new agent skill from notes, links, a real task, or project artifacts. |
 | [skill-refine](skills/productivity/skill-refine/SKILL.md) | Use when auditing, testing, or improving an existing agent skill from feedback, traces, or a no-skill baseline. |
+| [step-by-step](skills/productivity/step-by-step/SKILL.md) | Use when a task has two or more open decisions, trade-offs, or recommendations to walk through with the user, or when the user asks to go step by step. |

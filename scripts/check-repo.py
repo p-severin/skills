@@ -57,6 +57,7 @@ GROUPS = {
         "plain-talk",
         "skill-create",
         "skill-refine",
+        "step-by-step",
     ),
 }
 GROUP_OF = {name: group for group, names in GROUPS.items() for name in names}

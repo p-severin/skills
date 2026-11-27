@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.1.0
+
+Add model-invoked step-by-step skill under productivity for walking through open decisions and recommendations one item at a time. The catalog has 20 skills.
+
 ## 4.0.0
 
 Remove write-digica-readme. Allow model invocation for hook-setup,
