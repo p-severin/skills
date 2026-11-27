@@ -9,6 +9,7 @@ field. Any other non-spec field still fails.
 
 from __future__ import annotations
 
+import argparse
 import re
 import shutil
 import subprocess
@@ -27,15 +28,8 @@ SPEC_FIELDS = {
     "metadata",
     "compatibility",
 }
-ALLOWED_DIRS = {"references", "scripts", "assets"}
-MODEL_INVOKED = {
-    "hook-setup",
-    "mlflow-analyzer",
-    "plain-talk",
-    "show-the-change",
-    "web-scraping-ops",
-    "web-scraping-references",
-}
+ALLOWED_DIRS = {"references", "scripts", "assets", "agents"}
+CODEX_USER_INVOKED = "policy:\n  allow_implicit_invocation: false\n"
 GROUPS = {
     "scraping": (
         "web-scraping-scout",
@@ -108,14 +102,37 @@ def check_layout(skill: Path, errors: list[str]) -> None:
         parts = rel.parts
         if path.is_dir():
             if len(parts) != 1 or parts[0] not in ALLOWED_DIRS:
-                errors.append(f"{skill.name}: directory {rel} is outside references, scripts, and assets")
+                errors.append(
+                    f"{skill.name}: directory {rel} is outside references, scripts, assets, and agents"
+                )
             continue
         if len(parts) == 1 and parts[0] not in {"SKILL.md", "CHANGELOG.md"}:
             errors.append(f"{skill.name}: loose file {rel}")
         elif len(parts) == 2 and parts[0] not in ALLOWED_DIRS:
             errors.append(f"{skill.name}: file {rel} is in the wrong directory")
+        elif len(parts) == 2 and parts[0] == "agents" and parts[1] != "openai.yaml":
+            errors.append(f"{skill.name}: agents may contain only openai.yaml")
         elif len(parts) > 2:
             errors.append(f"{skill.name}: nested file {rel}")
+
+
+def sync_codex() -> None:
+    for skill in skill_dirs():
+        skill_md = skill / "SKILL.md"
+        if not skill_md.is_file():
+            continue
+        meta = load_frontmatter(skill_md.read_text())
+        user_invoked = meta.get("disable-model-invocation") is True
+        agents_dir = skill / "agents"
+        openai_path = agents_dir / "openai.yaml"
+        if user_invoked:
+            agents_dir.mkdir(exist_ok=True)
+            if not openai_path.is_file() or openai_path.read_text() != CODEX_USER_INVOKED:
+                openai_path.write_text(CODEX_USER_INVOKED)
+        elif openai_path.is_file():
+            openai_path.unlink()
+            if agents_dir.is_dir() and not any(agents_dir.iterdir()):
+                agents_dir.rmdir()
 
 
 def check_skill(skill: Path, errors: list[str]) -> str:
@@ -139,12 +156,31 @@ def check_skill(skill: Path, errors: list[str]) -> str:
     if not isinstance(description, str) or not description.startswith("Use when"):
         errors.append(f"{skill.name}: description must start with 'Use when'")
 
-    disabled = meta.get("disable-model-invocation")
-    if skill.name in MODEL_INVOKED:
-        if "disable-model-invocation" in meta:
-            errors.append(f"{skill.name}: model-invoked skill must not set disable-model-invocation")
-    elif disabled is not True:
-        errors.append(f"{skill.name}: disable-model-invocation must be true")
+    if "disable-model-invocation" in meta and meta["disable-model-invocation"] is not True:
+        errors.append(f"{skill.name}: disable-model-invocation must be true when set")
+    user_invoked = meta.get("disable-model-invocation") is True
+
+    openai_path = skill / "agents" / "openai.yaml"
+    allow_implicit = None
+    if openai_path.is_file():
+        config = yaml.safe_load(openai_path.read_text())
+        if not isinstance(config, dict):
+            errors.append(f"{skill.name}: agents/openai.yaml must be a mapping")
+        else:
+            policy = config.get("policy")
+            if isinstance(policy, dict):
+                allow_implicit = policy.get("allow_implicit_invocation")
+    if user_invoked and allow_implicit is not False:
+        errors.append(
+            f"{skill.name}: user-invoked skill must set "
+            "agents/openai.yaml policy.allow_implicit_invocation to false "
+            "(run python3 scripts/check-repo.py --sync-codex)"
+        )
+    elif not user_invoked and allow_implicit is False:
+        errors.append(
+            f"{skill.name}: model-invoked skill must allow implicit Codex invocation "
+            "(run python3 scripts/check-repo.py --sync-codex)"
+        )
 
     metadata = meta.get("metadata")
     version = metadata.get("version") if isinstance(metadata, dict) else None
@@ -406,7 +442,17 @@ def check_links(errors: list[str]) -> None:
             check_one_link(path, url, slugs, errors)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--sync-codex",
+        action="store_true",
+        help="Generate or remove agents/openai.yaml from SKILL.md before checking.",
+    )
+    args = parser.parse_args(argv)
+    if args.sync_codex:
+        sync_codex()
+
     errors: list[str] = []
     if (ROOT / ".claude-plugin").exists() or (ROOT / ".cursor-plugin").exists():
         errors.append("plugin manifest is not allowed")

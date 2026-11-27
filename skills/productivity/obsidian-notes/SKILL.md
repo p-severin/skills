@@ -3,7 +3,7 @@ name: obsidian-notes
 description: "Use when the user wants notes found, created, edited, summarized, or organized in an Obsidian vault."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Obsidian Vault

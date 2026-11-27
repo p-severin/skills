@@ -3,7 +3,7 @@ name: scrapy-deploy
 description: "Use when the user wants an existing Scrapy project deployed or scheduled."
 disable-model-invocation: true
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Scrapy Deploy

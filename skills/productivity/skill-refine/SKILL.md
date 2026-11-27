@@ -3,7 +3,7 @@ name: skill-refine
 description: "Use when auditing, testing, or improving an existing agent skill from feedback, traces, or a no-skill baseline."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Refine Skill

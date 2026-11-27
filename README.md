@@ -24,6 +24,8 @@ uvx pre-commit run --all-files
 
 The hook installs `skills-ref` in an isolated environment and runs
 `scripts/check-repo.py`, which is the same validator that CI runs.
+After changing `disable-model-invocation` in a `SKILL.md`, run
+`python3 scripts/check-repo.py --sync-codex` to regenerate `agents/openai.yaml`.
 
 ## Scraping
 

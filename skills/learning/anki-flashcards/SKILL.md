@@ -3,7 +3,7 @@ name: anki-flashcards
 description: "Use when the user wants flashcards from text, a file, or a URL, or wants those cards as an Anki .apkg deck."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Anki flashcards

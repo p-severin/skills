@@ -3,7 +3,7 @@ name: kolbs-reflection
 description: "Use when the user asks for a Kolb cycle reflection or a socratic pass through Experience, Reflection, Abstraction, and Experiment."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Kolb's Reflection

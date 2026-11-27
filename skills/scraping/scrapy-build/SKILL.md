@@ -3,7 +3,7 @@ name: scrapy-build
 description: "Use when the user wants a Scrapy project created, a domain or spider added, or page objects written."
 disable-model-invocation: true
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Scrapy Build

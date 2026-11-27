@@ -3,7 +3,7 @@ name: to-contract-tickets
 description: "Use when the user wants a plan, spec, or conversation turned into tracker tickets whose interface, rules, and test names are fixed in a code contract before implementation."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # To Contract Tickets

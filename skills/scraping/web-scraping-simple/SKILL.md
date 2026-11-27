@@ -3,7 +3,7 @@ name: web-scraping-simple
 description: "Use when the user wants a small standalone Python scraping proof after a scout."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 # Web Scraping Simple
 

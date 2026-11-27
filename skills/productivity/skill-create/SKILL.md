@@ -3,7 +3,7 @@ name: skill-create
 description: "Use when creating a new agent skill from notes, links, a real task, or project artifacts."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Create Skill

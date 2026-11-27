@@ -3,7 +3,7 @@ name: web-scraping-pipeline-design
 description: "Use when the user wants a production scraping pipeline designed after scouting and before implementation."
 disable-model-invocation: true
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 # Web Scraping Pipeline Design
 

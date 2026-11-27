@@ -3,7 +3,7 @@ name: web-scraping-scout
 description: "Use when the user wants a site scouted before a scraper is built or redesigned, or the scrape request is still unclear."
 disable-model-invocation: true
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 # Web Scraping Scout
 

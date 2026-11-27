@@ -3,7 +3,7 @@ name: crawlee-build
 description: "Use when the user asks for a Crawlee-python crawler, or a production design has approved Crawlee for a browser-heavy target."
 disable-model-invocation: true
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Crawlee Build

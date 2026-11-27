@@ -2,7 +2,9 @@
 
 ## 4.0.0
 
-Remove write-digica-readme. The catalog has 19 skills.
+Remove write-digica-readme. Allow model invocation for hook-setup,
+mlflow-analyzer, and web-scraping-ops. Derive Codex `agents/openai.yaml` from
+`SKILL.md` via `scripts/check-repo.py --sync-codex`. The catalog has 19 skills.
 
 ## 3.2.0
 
