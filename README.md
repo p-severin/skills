@@ -8,6 +8,23 @@ npx skills add p-severin/skills --skill <name>
 
 `scripts/link-skills.sh` links every skill into `~/.claude/skills` and `~/.agents/skills`.
 
+## Validation
+
+Install the local hook:
+
+```bash
+uvx pre-commit install --install-hooks
+```
+
+Run every check manually:
+
+```bash
+uvx pre-commit run --all-files
+```
+
+The hook installs `skills-ref` in an isolated environment and runs
+`scripts/check-repo.py`, which is the same validator that CI runs.
+
 ## Scraping
 
 | Skill | When to use |

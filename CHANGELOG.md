@@ -3,7 +3,8 @@
 ## 3.1.0
 
 Add to-contract-tickets for turning plans and specs into contract-backed
-tracker tickets. The catalog has 18 skills.
+tracker tickets. Add local pre-commit validation with an isolated
+`skills-ref` installation. The catalog has 18 skills.
 
 ## 3.0.0
 

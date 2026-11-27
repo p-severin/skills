@@ -64,7 +64,14 @@ GROUPS = {
 GROUP_OF = {name: group for group, names in GROUPS.items() for name in names}
 EXPECTED = [name for names in GROUPS.values() for name in names]
 ROOT_DIRS = {".github", "docs", "scripts", "skills"}
-ROOT_FILES = {"CHANGELOG.md", "LICENSE", "README.md", "decisions.tsv"}
+ROOT_FILES = {
+    ".pre-commit-config.yaml",
+    "CHANGELOG.md",
+    "GLOSSARY.md",
+    "LICENSE",
+    "README.md",
+    "decisions.tsv",
+}
 TOKEN = re.compile(r"\w+|[^\w\s]", re.UNICODE)
 FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 VERSION = re.compile(r"^## (\d+\.\d+\.\d+)\s*$", re.MULTILINE)
@@ -197,7 +204,8 @@ def check_readme(descriptions: dict[str, str], errors: list[str]) -> None:
         heading = re.match(r"^## ([A-Za-z]+)\s*$", line)
         if heading:
             current = heading.group(1).lower()
-            seen_groups.append(current)
+            if current in GROUPS:
+                seen_groups.append(current)
             continue
         match = ROW.match(line)
         if match is None:
