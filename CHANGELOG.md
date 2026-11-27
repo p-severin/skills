@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.0
+
+Add skill-create and skill-refine under productivity for creating, linting,
+and baseline-testing agent skills. The catalog has 20 skills.
+
 ## 3.1.0
 
 Add to-contract-tickets for turning plans and specs into contract-backed

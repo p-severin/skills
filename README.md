@@ -62,3 +62,5 @@ The hook installs `skills-ref` in an isolated environment and runs
 | --- | --- |
 | [obsidian-notes](skills/productivity/obsidian-notes/SKILL.md) | Use when the user wants notes found, created, edited, summarized, or organized in an Obsidian vault. |
 | [plain-talk](skills/productivity/plain-talk/SKILL.md) | Use when writing any reply, explanation, question, progress update, summary, recommendation, warning, or error for a person. |
+| [skill-create](skills/productivity/skill-create/SKILL.md) | Use when creating a new agent skill from notes, links, a real task, or project artifacts. |
+| [skill-refine](skills/productivity/skill-refine/SKILL.md) | Use when auditing, testing, or improving an existing agent skill from feedback, traces, or a no-skill baseline. |
