@@ -11,6 +11,15 @@ VALID_PROJECT_TYPES = {"data-science", "software"}
 VALID_ON_DVC = {"tracked", "untracked", "abandoned"}
 VALID_FOLDER_LOCATIONS = {"gdrive", "nas"}
 VALID_DATASET_LOCATIONS = {"nas", "gdrive", "other"}
+CONSTRAINT_CATEGORY_ORDER = (
+    "performance",
+    "accuracy",
+    "hardware",
+    "scalability",
+    "compliance",
+    "deadlines",
+    "other",
+)
 YYYY_MM_RE = re.compile(r"^\d{4}-\d{2}$")
 
 

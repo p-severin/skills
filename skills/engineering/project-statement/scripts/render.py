@@ -17,8 +17,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import yaml
-
-from validate_statement import _is_todo, validate
+from validate_statement import CONSTRAINT_CATEGORY_ORDER, _is_todo, validate
 
 
 # ---------- icon registry ----------
@@ -58,16 +57,6 @@ LOCATION_ICONS = {
     "nas": "💽",
     "other": "🗄️",
 }
-
-CONSTRAINT_CATEGORY_ORDER = [
-    "performance",
-    "accuracy",
-    "hardware",
-    "scalability",
-    "compliance",
-    "deadlines",
-    "other",
-]
 
 CONSTRAINT_CATEGORY_ICONS = {
     "performance": "⚡",
