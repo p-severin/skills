@@ -48,6 +48,7 @@ GROUPS = {
         "hook-setup",
         "show-the-change",
         "project-statement",
+        "to-contract-tickets",
         "mlflow-analyzer",
         "write-digica-readme",
     ),

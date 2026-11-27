@@ -28,6 +28,7 @@ npx skills add p-severin/skills --skill <name>
 | [hook-setup](skills/engineering/hook-setup/SKILL.md) | Use when the user wants Python or JS/TS pre-commit hooks set up or repaired. |
 | [show-the-change](skills/engineering/show-the-change/SKILL.md) | Use when proposing a change in code, UI, configuration, architecture, data, or process, or when a result is hard to picture. |
 | [project-statement](skills/engineering/project-statement/SKILL.md) | Use when the user wants a project statement created or updated. |
+| [to-contract-tickets](skills/engineering/to-contract-tickets/SKILL.md) | Use when the user wants a plan, spec, or conversation turned into tracker tickets whose interface, rules, and test names are fixed in a code contract before implementation. |
 | [mlflow-analyzer](skills/engineering/mlflow-analyzer/SKILL.md) | Use when the user wants traditional MLflow experiment runs ranked or compared. |
 | [write-digica-readme](skills/engineering/write-digica-readme/SKILL.md) | Use when the user wants a Digica README written or audited. |
 
